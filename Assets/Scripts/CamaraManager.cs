@@ -34,4 +34,11 @@ public class CamaraManager : MonoBehaviour
             cameras[i].SetActive(i == activeCameraIndex);
         }
     }
+    public void SetCameraState(int IndexToChange)
+    {
+        for (int i = 0; i < cameras.Length; i++)
+        {
+            cameras[i].SetActive(i == IndexToChange);
+        }
+    }
 }

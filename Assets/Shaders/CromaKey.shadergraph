@@ -867,7 +867,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Range",
     "m_StageCapability": 3,
-    "m_Value": 0.4099999964237213,
+    "m_Value": 0.3100000023841858,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
@@ -1265,7 +1265,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Fuzziness",
     "m_StageCapability": 3,
-    "m_Value": 0.17000000178813935,
+    "m_Value": 0.2199999988079071,
     "m_DefaultValue": 0.0,
     "m_Labels": []
 }
