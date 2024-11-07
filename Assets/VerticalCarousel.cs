@@ -36,16 +36,21 @@ public class VerticalCarousel : MonoBehaviour
     }
 private void ScrollToIndex(int index)
 {
-    // Calcula la posición normalizada en el eje vertical
-    float normalizedPosition = 1 - (float)index / (totalItems.Length - 1);
+    // Calcula la altura de cada elemento asumiendo que todos son del mismo tamaño
+    float itemHeight = totalItems[0].GetComponent<RectTransform>().rect.height;
     
-    Debug.Log("Normalized Position: " + normalizedPosition);
+    // Calcula la posición de desplazamiento en píxeles
+    float targetPositionY = index * itemHeight;
 
-    // Usa DOTween para animar el valor de verticalNormalizedPosition
-    DOTween.To(() => scrollRect.verticalNormalizedPosition,
-               x => scrollRect.verticalNormalizedPosition = x,
-               normalizedPosition,
+    // Establece el límite superior e inferior para evitar ir más allá del contenido
+    float maxPositionY = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
+    targetPositionY = Mathf.Clamp(targetPositionY, 0, maxPositionY);
+
+    // Usa DOTween para animar el desplazamiento
+    DOTween.To(() => scrollRect.content.anchoredPosition,
+               pos => scrollRect.content.anchoredPosition = new Vector2(pos.x, -targetPositionY),
+               new Vector2(scrollRect.content.anchoredPosition.x, -targetPositionY),
                transitionDuration)
-           .SetEase(Ease.OutCubic); // Cambia la curva de easing según la suavidad que desees
+           .SetEase(Ease.OutCubic); // Ajusta la curva de easing si es necesario
 }
 }
