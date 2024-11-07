@@ -11,46 +11,54 @@ public class VerticalCarousel : MonoBehaviour
 
     private void Start()
     {
-        // Inicialización si es necesario
+        UpdateCarousel(); // Asegurarse de que el índice actual esté actualizado al inicio
+        InvokeRepeating("UpdateCarousel",1,1);
     }
+
+  
 
     [ContextMenu("Move To Next")] // Permite llamar a este método desde el menú contextual en el Inspector
     public void MoveToNext()
     {
-        Debug.Log("Se activo el cambio de carrusel");
+        Debug.Log("Se activó el cambio de carrusel al siguiente elemento.");
         if (currentIndex < totalItems.Length - 1)
         {
             currentIndex++;
-            ScrollToIndex(currentIndex);
+            UpdateCarousel();
         }
     }
 
     [ContextMenu("Move To Previous")] // Permite llamar a este método desde el menú contextual en el Inspector
     public void MoveToPrevious()
     {
+        Debug.Log("Se activó el cambio de carrusel al elemento anterior.");
         if (currentIndex > 0)
         {
             currentIndex--;
-            ScrollToIndex(currentIndex);
+            UpdateCarousel();
         }
     }
-private void ScrollToIndex(int index)
-{
-    // Calcula la altura de cada elemento asumiendo que todos son del mismo tamaño
-    float itemHeight = totalItems[0].GetComponent<RectTransform>().rect.height;
-    
-    // Calcula la posición de desplazamiento en píxeles
-    float targetPositionY = index * itemHeight;
 
-    // Establece el límite superior e inferior para evitar ir más allá del contenido
-    float maxPositionY = scrollRect.content.rect.height - scrollRect.viewport.rect.height;
-    targetPositionY = Mathf.Clamp(targetPositionY, 0, maxPositionY);
+    // Método para actualizar el carrusel según el índice actual
+    private void UpdateCarousel()
+    {
+        // Validar que el índice esté dentro del rango
+        currentIndex = Mathf.Clamp(currentIndex, 0, totalItems.Length - 1);
+        ScrollToIndex(currentIndex);
+    }
 
-    // Usa DOTween para animar el desplazamiento
-    DOTween.To(() => scrollRect.content.anchoredPosition,
-               pos => scrollRect.content.anchoredPosition = new Vector2(pos.x, -targetPositionY),
-               new Vector2(scrollRect.content.anchoredPosition.x, -targetPositionY),
-               transitionDuration)
-           .SetEase(Ease.OutCubic); // Ajusta la curva de easing si es necesario
-}
+    // Método para desplazarse al índice especificado
+    private void ScrollToIndex(int index)
+    {
+        // Calcula la posición normalizada en el eje vertical
+        float normalizedPosition = 1 - (float)index / (totalItems.Length - 1);
+        Debug.Log("Posición normalizada: " + normalizedPosition);
+
+        // Usa DOTween para animar el valor de verticalNormalizedPosition
+        DOTween.To(() => scrollRect.verticalNormalizedPosition,
+                   x => scrollRect.verticalNormalizedPosition = x,
+                   normalizedPosition,
+                   transitionDuration)
+               .SetEase(Ease.OutCubic); // Cambia la curva de easing según la suavidad que desees
+    }
 }
