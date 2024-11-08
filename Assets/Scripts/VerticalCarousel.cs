@@ -12,7 +12,6 @@ public class VerticalCarousel : MonoBehaviour
     private void Start()
     {
         UpdateCarousel(); // Asegurarse de que el índice actual esté actualizado al inicio
-        InvokeRepeating("UpdateCarousel",1,1);
     }
 
   
@@ -48,7 +47,7 @@ public class VerticalCarousel : MonoBehaviour
     }
 
     // Método para desplazarse al índice especificado
-    private void ScrollToIndex(int index)
+    public void ScrollToIndex(int index)
     {
         // Calcula la posición normalizada en el eje vertical
         float normalizedPosition = 1 - (float)index / (totalItems.Length - 1);

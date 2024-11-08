@@ -24,7 +24,7 @@ public class SliderTextUpdater : MonoBehaviour
     void UpdateText(float value)
     {
         // Cambiar el texto del TextMeshPro al valor actual del slider como entero
-        textMeshPro.text = "Valor: " + Mathf.RoundToInt(value).ToString();
+        textMeshPro.text = Mathf.RoundToInt(value).ToString() + "%" ;
     }
 
     // Destruir el listener cuando el objeto sea destruido para evitar errores
